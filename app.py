@@ -42,15 +42,15 @@ def authenticate(authorization):
         response = requests.post('https://guest.api.arcadia.pinnacle.com/0.1/sessions', headers=headers, json=json_data)
 
         if response.status_code <= 300:
-            response_data = response.json()
+            responseData = response.json()
 
             headersData = response.headers
 
-            token = response_data.get('token')
-            expiresAt = response_data.get('expiresAt')
-            lastUseAt = response_data.get('lastUsedAt')
-            createdAt = response_data.get('createdAt')
-            userName = response_data.get('username')
+            token = responseData.get('token')
+            expiresAt = responseData.get('expiresAt')
+            lastUseAt = responseData.get('lastUsedAt')
+            createdAt = responseData.get('createdAt')
+            userName = responseData.get('username')
 
             
 
