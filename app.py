@@ -40,6 +40,7 @@ def authenticate(authorization):
     if not authorization.get('validate') or parser.isoparse(authorization.get('validate')) < datetime.now(pytz.utc):
         
         response = requests.post('https://guest.api.arcadia.pinnacle.com/0.1/sessions', headers=headers, json=json_data)
+        
 
         if response.status_code <= 300:
             responseData = response.json()
@@ -77,22 +78,43 @@ def get_balance():
 
     authorization = json.loads(request.data).get('authorization')        
     authorization = authenticate(authorization)
-    headersData = authorization.get('headers')
+    
 
-    if not authorization.get('token'):
-        return {
-            'error': 'Usuário não autenticado. Faça a autenticação primeiro.'
-        }
-
-    responseBalance = requests.get('https://guest.api.arcadia.pinnacle.com/0.1/wallet/balance', headers=headersData)
-    balance = responseBalance.json()
-    getBalance = balance.get('amount')
-    getCurrency = balance.get('currency')
-
-    return {
-        'totalAmount': getBalance,
-        'currency': getCurrency
+    headers = {
+        'authority': 'guest.api.arcadia.pinnacle.com',
+        'accept': 'application/json',
+        'accept-language': 'pt-BR,pt;q=0.5',
+        'content-type': 'application/json',
+        'origin': 'https://www.pinnacle.com',
+        'referer': 'https://www.pinnacle.com/',
+        'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Brave";v="114"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-site',
+        'sec-gpc': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+        'x-api-key': 'CmX2KcMrXuFmNg6YFbmTxE0y9CIrOi0R',
+        'x-device-uuid': 'cf6477ed-f5e13873-9631ac49-0725adfb',
+        'x-session': authorization.get('token'),
+     
+    
     }
+    
+    if not authorization.get('validate') or parser.isoparse(authorization.get('validate')) < datetime.now(pytz.utc):
+    
+        responseBalance = requests.get('https://guest.api.arcadia.pinnacle.com/0.1/wallet/balance', headers=headers)
+    
+        balance = responseBalance.json()
+        
+        getBalance = balance.get('amount')
+        getCurrency = balance.get('currency')
+
+        return {
+            'totalAmount': getBalance,
+            'currency': getCurrency
+        }
 
 @app.route("/api/v1/bot/login/", methods=["POST"])
 def login():
@@ -125,17 +147,9 @@ def check_authentication():
          "username": authorization.get("username")
      }
     
-    if not authorization.get("authValidate") or not authorization.get("authToken"):
-        print("cai aqui")
-        return {
-            "error": "Usuário não autenticado. Faça a autenticação primeiro."
-        }
     
-    if authorization.get("authToken") != authorization.get("token"):
-        print("cai aqui 2")
-        return  {
-             "error": "Usuário não autenticado. Faça a autenticação primeiro."
-        }  
+    
+    
     
   
 
