@@ -135,10 +135,8 @@ def check_authentication():
    
 
     
-    
-    if authenticate(authorization).get("token") or authorization.get("authToken") == authorization.get("token"):
         
-     return {
+    return {
          
          "token": authorization.get("token"),
          "validate": authorization.get("validate"),
