@@ -120,7 +120,7 @@ def check_game():
         # Esse é o valor do campo que calcula o valor ganho na aposta
         data["payout"] = input_win.get_attribute('value')
         
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(3000)
         
         if home in title and away in title:
             success = True
