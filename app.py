@@ -181,8 +181,8 @@ def login():
 
 @app.route(f"{ROUTER_PATH}/check_authentication/", methods=["POST"])
 def check_authentication():
-    
-    authorization = authenticate(authorization)    
+    authorization = json.loads(request.data).get("authorization")
+    authorization = authenticate(authorization)
     
     return Response({
         "token": authorization.get("token"),
