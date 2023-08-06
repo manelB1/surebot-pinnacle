@@ -12,9 +12,18 @@ app = Flask(__name__)
 
 ROUTER_PATH = '/api/v1/bot'
 
+AVAILABLES_TO_MARKET_TYPES = ['TOTAL', 'HANDICAP']
+
 MARKETS = {
-    "HANDCAP ASIATICO": "Handicap – Game",
+    "TOTAL": "Total –",
+    "MONEY": "Money Line –",
+    "HANDICAP": "Handicap –",
     "TOTALS": "Total – Game"
+}
+
+MARKET_TYPE_NAMES = {
+    "UNDER": 'Menos',
+    "OVER": 'Acima',
 }
 
 def authenticate(authorization):
@@ -64,70 +73,133 @@ def authenticate(authorization):
     
     return authorization
 
-
 @app.route(f"{ROUTER_PATH}/check_game/")
 def check_game():
-    
     tip = json.loads(request.data)
-    success = False
-
-    with sync_playwright() as p:
-        data = {
-            "payout": None,
-        }
-        
-        home = tip.get('homeTeam')
-        away = tip.get('awayTeam')
-        stake = tip.get('stake')
-        market = tip.get('market')
-        market_type = tip.get('marketType')
-        point = tip.get('point')
-        
-        game_url: str = tip.get('gameUrl')
-        
-        browser = p.chromium.launch(headless=False)
-        
-        page = browser.new_page()
-        
-        page.goto(game_url)
-        
-        title = page.title()
-        
-        # page.get_by_title(home).click()
-        
-        page.wait_for_timeout(1000)
-        
-        # Localiza o botão para expandir todos mercados
-        page.locator('div[class*="style_showAll__"]').click()
-        for button in page.locator('button[class*="style_toggleMarkets__"]').all():
-            button.click()
-        
-        if point > 0:
-            point = f'+{point}'
-        else:
-            point = f'-{point}'
-            
-        page.locator(f'button[title="{point}"]').click()
-        page.wait_for_timeout(2000)
-                
-        # Localiza os inputs para digitar o valor da aposta
-        input_value = page.locator(".betslipCardStakeWinInput > div > div:nth-child(1) > input[type=text]")
-        input_win = page.locator(".betslipCardStakeWinInput > div > div:nth-child(2) > input[type=text]")
-        
-        # Preenche o valor da aposta com o campo 'Stake'
-        input_value.fill(str(stake))
-        
-        # Esse é o valor do campo que calcula o valor ganho na aposta
-        data["payout"] = input_win.get_attribute('value')
-        
-        page.wait_for_timeout(3000)
-        
-        if home in title and away in title:
-            success = True
-        
-        browser.close()
     
-    return Response(data["payout"],status=200 if success else 400)
+    with sync_playwright() as p:
+        try:
+            home = tip.get('homeTeam')
+            away = tip.get('awayTeam')
+            stake = tip.get('stake')
+            market = tip.get('market')
+            market_type = tip.get('marketType')
+            market_point = tip.get('marketPoint')
+            point = tip.get('point')
+
+            market = MARKETS[market]
+
+            if market_type:
+                market_type = MARKET_TYPE_NAMES[market_type]
+
+            game_url: str = tip.get('gameUrl')
+            
+            browser = p.chromium.launch(headless=True)
+            
+            page = browser.new_page()
+            
+            page.goto(game_url, timeout=15000)
+            
+            title = page.title()
+            
+
+            page.wait_for_timeout(3000)
+            
+            print(title)
+            
+            # Localiza o botão para expandir todos mercados
+            page.locator('div[class*="style_showAll__"]').click()
+            for button in page.locator('button[class*="style_toggleMarkets__"]').all():
+                button.click()
+
+            if market in AVAILABLES_TO_MARKET_TYPES:
+                #Clica em todos os buttons
+                if market_point and market_type:
+                    buttons = page.locator(f"button").filter(has_text=str(point)).filter(has_text=market_point).filter(has_text=market_type)
+                elif market_point:
+                    buttons = page.locator(f"button").filter(has_text=str(point)).filter(has_text=market_point)
+                elif market_type:
+                    buttons = page.locator(f"button").filter(has_text=str(point)).filter(has_text=market_type)
+                else:
+                    buttons = page.locator(f"button").filter(has_text=str(point))
+            else:
+                buttons = page.locator(f"button").filter(has_text=str(point))
+
+            page.wait_for_timeout(1000)
+            for button in buttons.all():
+                button.click()
+
+            page.wait_for_timeout(1000)
+
+            cards_container = page.locator('#betslip-singles')
+
+            cards = cards_container.locator('div>.betslip-card').filter(has_text=market)
+            
+            if not cards.count():
+                return {
+                    "error": True,
+                    "detail": "Não foi encontrada nenhuma ODD"
+                }
+            elif cards.count() > 1:
+                print("@@@@@@@@@@ cards:", cards.count())
+                for card in cards.all():
+                    print(card.text_content())
+
+
+                return {
+                    "error": True,
+                    "detail": "O jogo retornou mais de uma ODD"
+                }
+
+
+            card = cards.first
+            print("@@@@@@@@@@@@@ 1")
+
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", card.locator('span[class^="style_priceLabelAlt__"]').text_content())
+
+            inputs = card.locator(".betslipCardStakeWinInput")
+            
+            print("@@@@@@@@@@@@@ 2")
+            input_stake = inputs.locator('input').first
+
+            print("@@@@@@@@@@@@@ 3")
+            input_win = inputs.locator('input').nth(1)
+
+            print("@@@@@@@@@@@@@ 4")
+            page.wait_for_timeout(1000)
+
+            input_stake.fill(str(stake))
+
+            print("@@@@@@@@@@@@@ 5")
+            
+            page.wait_for_timeout(1000)
+
+
+            print("@@@@@@@@@@@@@ 6")
+            payout_value = input_win.get_attribute('value')
+            
+
+            print("@@@@@@@@@@@@@ 7")
+            browser.close()
+
+            return {
+                "error": False,
+                "detail": "",
+                "data": {
+                    "payout_value": payout_value,
+                }
+            }, 200
+
+        except Exception as e:
+            return {
+                "error": True,
+                "detail": repr(e)
+            }, 400
+    
+    return {
+        "error": True,
+        "detail": "Nada foi feito" 
+    }, 400
 
 @app.route(f"{ROUTER_PATH}/balance/", methods=["POST"])
 def get_balance():

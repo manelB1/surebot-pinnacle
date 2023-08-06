@@ -1,0 +1,266 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "site",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "site",
+        "description": "site",
+        "detail": "site",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "pytz",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pytz",
+        "description": "pytz",
+        "detail": "pytz",
+        "documentation": {}
+    },
+    {
+        "label": "parser",
+        "importPath": "dateutil",
+        "description": "dateutil",
+        "isExtraImport": true,
+        "detail": "dateutil",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "sync_playwright",
+        "importPath": "playwright.sync_api",
+        "description": "playwright.sync_api",
+        "isExtraImport": true,
+        "detail": "playwright.sync_api",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "bin_dir",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "bin_dir = os.path.dirname(abs_file)\nbase = bin_dir[: -len(\"bin\") - 1]  # strip away the bin part from the __file__, plus the path separator\n# prepend bin to PATH (this file is inside the bin directory)\nos.environ[\"PATH\"] = os.pathsep.join([bin_dir] + os.environ.get(\"PATH\", \"\").split(os.pathsep))\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.10/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path.decode(\"utf-8\") if \"\" else path)",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "base",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "base = bin_dir[: -len(\"bin\") - 1]  # strip away the bin part from the __file__, plus the path separator\n# prepend bin to PATH (this file is inside the bin directory)\nos.environ[\"PATH\"] = os.pathsep.join([bin_dir] + os.environ.get(\"PATH\", \"\").split(os.pathsep))\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.10/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path.decode(\"utf-8\") if \"\" else path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"PATH\"]",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"PATH\"] = os.pathsep.join([bin_dir] + os.environ.get(\"PATH\", \"\").split(os.pathsep))\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.10/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path.decode(\"utf-8\") if \"\" else path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"VIRTUAL_ENV\"]",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.10/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path.decode(\"utf-8\") if \"\" else path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "prev_length",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "prev_length = len(sys.path)\nfor lib in \"../lib/python3.10/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path.decode(\"utf-8\") if \"\" else path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.path[:]",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "sys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.real_prefix",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "sys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.prefix",
+        "kind": 5,
+        "importPath": "venv.bin.activate_this",
+        "description": "venv.bin.activate_this",
+        "peekOfCode": "sys.prefix = base",
+        "detail": "venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "authenticate",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def authenticate(authorization):\n    authorization = json.loads(request.data).get(\"authorization\")\n    headers = {\n        'authority': 'guest.api.arcadia.pinnacle.com',\n        'accept': 'application/json',\n        'accept-language': 'pt-BR,pt;q=0.7',\n        'content-type': 'application/json',\n        'origin': 'https://www.pinnacle.com',\n        'referer': 'https://www.pinnacle.com/',\n        'sec-ch-ua': '\"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Brave\";v=\"114\"',",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "check_game",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def check_game():\n    tip = json.loads(request.data)\n    with sync_playwright() as p:\n        try:\n            home = tip.get('homeTeam')\n            away = tip.get('awayTeam')\n            stake = tip.get('stake')\n            market = tip.get('market')\n            market_type = tip.get('marketType')\n            market_point = tip.get('marketPoint')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_balance",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_balance():\n    authorization = json.loads(request.data).get('authorization')        \n    authorization = authenticate(authorization)\n    headers = {\n        'authority': 'guest.api.arcadia.pinnacle.com',\n        'accept': 'application/json',\n        'accept-language': 'pt-BR,pt;q=0.5',\n        'content-type': 'application/json',\n        'origin': 'https://www.pinnacle.com',\n        'referer': 'https://www.pinnacle.com/',",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "login",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def login():\n    authorization = json.loads(request.data).get(\"authorization\")\n    authorization = authenticate(authorization)\n    return{\n        \"sucess\": \"usuario logado\"\n    }\n@app.route(f\"{ROUTER_PATH}/check_authentication/\", methods=[\"POST\"])\ndef check_authentication():\n    authorization = json.loads(request.data).get(\"authorization\")\n    authorization = authenticate(authorization)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "check_authentication",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def check_authentication():\n    authorization = json.loads(request.data).get(\"authorization\")\n    authorization = authenticate(authorization)\n    return Response({\n        \"token\": authorization.get(\"token\"),\n        \"validate\": authorization.get(\"validate\")\n    })",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\nROUTER_PATH = '/api/v1/bot'\nAVAILABLES_TO_MARKET_TYPES = ['TOTAL', 'HANDICAP']\nMARKETS = {\n    \"TOTAL\": \"Total –\",\n    \"MONEY\": \"Money Line –\",\n    \"HANDICAP\": \"Handicap –\",\n    \"TOTALS\": \"Total – Game\"\n}\nMARKET_TYPE_NAMES = {",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "ROUTER_PATH",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "ROUTER_PATH = '/api/v1/bot'\nAVAILABLES_TO_MARKET_TYPES = ['TOTAL', 'HANDICAP']\nMARKETS = {\n    \"TOTAL\": \"Total –\",\n    \"MONEY\": \"Money Line –\",\n    \"HANDICAP\": \"Handicap –\",\n    \"TOTALS\": \"Total – Game\"\n}\nMARKET_TYPE_NAMES = {\n    \"UNDER\": 'Menos',",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "AVAILABLES_TO_MARKET_TYPES",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "AVAILABLES_TO_MARKET_TYPES = ['TOTAL', 'HANDICAP']\nMARKETS = {\n    \"TOTAL\": \"Total –\",\n    \"MONEY\": \"Money Line –\",\n    \"HANDICAP\": \"Handicap –\",\n    \"TOTALS\": \"Total – Game\"\n}\nMARKET_TYPE_NAMES = {\n    \"UNDER\": 'Menos',\n    \"OVER\": 'Acima',",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "MARKETS",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "MARKETS = {\n    \"TOTAL\": \"Total –\",\n    \"MONEY\": \"Money Line –\",\n    \"HANDICAP\": \"Handicap –\",\n    \"TOTALS\": \"Total – Game\"\n}\nMARKET_TYPE_NAMES = {\n    \"UNDER\": 'Menos',\n    \"OVER\": 'Acima',\n}",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "MARKET_TYPE_NAMES",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "MARKET_TYPE_NAMES = {\n    \"UNDER\": 'Menos',\n    \"OVER\": 'Acima',\n}\ndef authenticate(authorization):\n    authorization = json.loads(request.data).get(\"authorization\")\n    headers = {\n        'authority': 'guest.api.arcadia.pinnacle.com',\n        'accept': 'application/json',\n        'accept-language': 'pt-BR,pt;q=0.7',",
+        "detail": "app",
+        "documentation": {}
+    }
+]
